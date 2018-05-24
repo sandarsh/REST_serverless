@@ -1,0 +1,131 @@
+service: rest-serverless
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  variableSyntax: '\${{([ :a-zA-Z0-9._,\-\/\(\)]+?)}}'
+  stage: api
+  region: us-east-1
+  environment:
+      DDB_TABLE: restServerlessTable
+
+custom:
+  defaultStage: dev
+  profiles:
+    dev: default
+
+package:
+  include:
+    - node_modules/uniqid
+    - db_service/**
+    - rest_service/**
+
+functions:
+  getAll:
+    handler: rest_service/getAll.handler
+    role: restServerlessTablePerms
+    events:
+      - http:
+          path: objects
+          method: get
+          cors: true
+  putOne:
+    handler: rest_service/putOne.handler
+    role: restServerlessTablePerms
+    events:
+      - http:
+          path: objects
+          method: post
+          cors: true
+  getOne:
+    handler: rest_service/getOne.handler
+    role: restServerlessTablePerms
+    events:
+      - http:
+          path: objects/{uid}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                uid: false
+  replaceOne:
+    handler: rest_service/replaceOne.handler
+    role: restServerlessTablePerms
+    events:
+      - http:
+          path: objects/{uid}
+          method: put
+          cors: true
+          request:
+            parameters:
+              paths:
+                uid: true
+  deleteOne:
+    handler: rest_service/deleteOne.handler
+    role: restServerlessTablePerms
+    events:
+      - http:
+          path: objects/{uid}
+          method: delete
+          cors: true
+          request:
+            parameters:
+              paths:
+                uid: true
+
+resources:
+  Resources:
+    restServerlessTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: restServerlessTable
+        AttributeDefinitions:
+          - AttributeName: uid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uid
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    restServerlessTablePerms:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: restServerlessTablePerms
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: restServerlessTablePerms
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "dynamodb:GetItem"
+                    - "dynamodb:Scan"
+                    - "dynamodb:PutItem"
+                    - "dynamodb:DeleteItem"
+                  Resource:
+                   - Fn::Sub: 'arn:aws:dynamodb:${{self:provider.region}}:${AWS::AccountId}:table/${{self:provider.environment.DDB_TABLE}}'
+                - Effect: Allow
+                  Action:
+                    - "logs:CreateLogGroup"
+                    - "logs:CreateLogStream"
+                    - "logs:PutLogEvents"
+                  Resource:
+                    - Fn::Sub: "arn:aws:logs:${{self:provider.region}}:${AWS::AccountId}:log-group:/aws/lambda/*:*:*"
+                - Effect: Allow
+                  Action:
+                    - "s3:PutObject"
+                  Resource:
+                    Fn::Join:
+                      - ""
+                      - - "arn:aws:s3:::"
+                        - "Ref" : "ServerlessDeploymentBucket"

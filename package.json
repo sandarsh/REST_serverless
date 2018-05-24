@@ -1,0 +1,22 @@
+{
+  "name": "rest_serverless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandarsh/REST_serverless.git"
+  },
+  "author": "Sandarsh Srivastava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sandarsh/REST_serverless/issues"
+  },
+  "homepage": "https://github.com/sandarsh/REST_serverless#readme",
+  "dependencies": {
+    "uniqid": "^4.1.1"
+  }
+}
