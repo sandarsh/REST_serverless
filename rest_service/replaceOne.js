@@ -1,6 +1,9 @@
 /**
  * @fileOverview
  * Implements the handler to replace an existing object
+ * ...
+ * Author: Sandarsh Srivastava
+ * ...
  */
 'use strict';
 

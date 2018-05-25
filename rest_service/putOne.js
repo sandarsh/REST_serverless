@@ -1,6 +1,9 @@
 /**
  * @fileOverview
  * Implements the handler for posting a new object to the database
+ * ...
+ * Author: Sandarsh Srivastava
+ * ...
  */
 'use strict';
 

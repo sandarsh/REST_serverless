@@ -1,6 +1,9 @@
 /**
  * @fileOverview
  * This file implements the handler to get a single object from the db given its uid
+ * ...
+ * Author: Sandarsh Srivastava
+ * ...
  */
 'use strict';
 

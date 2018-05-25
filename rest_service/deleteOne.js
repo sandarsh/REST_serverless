@@ -1,6 +1,9 @@
 /**
  * @fileOverview
  * This file implements the handler to delete an entry from the database given a uid.
+ * ...
+ * Author: Sandarsh Srivastava
+ * ...
  */
 'use strict';
 
