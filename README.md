@@ -38,20 +38,24 @@ The only requirement is for the keys to be configured. Set up your AWS account a
 To configure your keys simply type the below in the terminal:
 > aws configure
   
-and follow the prompts. For more information visit https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+and follow the prompts.  
+For more information visit https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
 
 
 ### Running on Local Environment
 #### Requirements:
 * Node.js
-
+* Serverless Framework
+* AWS CLI
 #### Instructions
-* Configure your AWS keys for the account you want the app to be deployed on.
+* Configure your AWS keys for the account you want the app to be deployed on. This could be a test, dev or prod account.
 * Clone this repo.
 * Run 'npm install' to install all dependencies.
 * Run `npm install serverless -g` which installs serverless framework globally.
-* Run `sls deploy` to deploy to AWS using default keys or `sls deploy --profile <profile_name>` to deply to another account.
-* Your lambda functions are now deployed. 
-* Serverless Framework provides various features including deploying single functions, fetching logs, invoking specific functions etc. For more information on various possibilities visit https://serverless.com/
+* Run `sls deploy` to deploy to AWS using default keys or `sls deploy --profile <profile_name>` to deploy to another account.
+>Note: The first deployment takes longer because it creates all the required resources.
+* Your lambda functions are now deployed. You should see the framework spit out the URLs your app is available on.
+* Serverless Framework provides various features including deploying single functions, fetching logs, invoking specific functions etc.  
+For more information on various possibilities visit https://serverless.com/
   
 
